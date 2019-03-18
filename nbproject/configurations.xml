@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>distance.h</itemPath>
+      <itemPath>libexport.h</itemPath>
+      <itemPath>shipshuk_lib.h</itemPath>
+      <itemPath>simil.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>distance.c</itemPath>
+      <itemPath>shipshuk_lib.c</itemPath>
+      <itemPath>simil.c</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="2">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <incDir>
+            <pElem>../../../../../../../Program Files/MySQL/mysql8/include</pElem>
+            <pElem>../../../../../../../Program Files/MySQL/MySQL Server 5.7/include</pElem>
+            <pElem>../../../../../../DB/mysql/include</pElem>
+          </incDir>
+        </cTool>
+        <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libshipshuk_lib.${CND_DLIB_EXT}</output>
+          <linkerAddLib>
+            <pElem>"../../../../../../../Program Files/MySQL/mysql8/lib"</pElem>
+            <pElem>"../../../../../../../Program Files/MySQL/mysql8/lib/plugin"</pElem>
+            <pElem>"../../../../../../../Program Files/MySQL/MySQL Server 5.7/lib"</pElem>
+            <pElem>"../../../../../../../Program Files/MySQL/MySQL Server 5.7/lib/plugin"</pElem>
+            <pElem>../../../../../../DB/mysql/lib</pElem>
+            <pElem>../../../../../../DB/mysql/lib/plugin</pElem>
+          </linkerAddLib>
+        </linkerTool>
+      </compileType>
+      <item path="distance.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="distance.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="libexport.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="shipshuk_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="shipshuk_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="simil.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="simil.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="2">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="distance.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="distance.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="libexport.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="shipshuk_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="shipshuk_lib.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="simil.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="simil.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
