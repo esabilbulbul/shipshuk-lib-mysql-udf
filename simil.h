@@ -21,8 +21,17 @@
     #endif
 
 
-        DLL_EXPORT int simil (const char *a, const char *b);
+        //DLL_EXPORT int simil (const char *a, const char *b);
 
+		// Define DLL_EXPORT based on platform
+        #ifdef _WIN32
+            #define DLL_EXPORT __declspec(dllexport)
+        #else
+            #define DLL_EXPORT __attribute__((visibility("default")))
+        #endif
+
+        // Declare the simil function with DLL_EXPORT for proper export
+        DLL_EXPORT int simil(const char *a, const char *b);
 
     #ifdef __cplusplus
     }
