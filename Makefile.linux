@@ -1,0 +1,17 @@
+CC = gcc
+CFLAGS = -Wall -fPIC -g $(shell mysql_config --cflags)
+LDFLAGS = -shared
+TARGET = libshipshuk_lib.so
+SRCS = shipshuk_lib.c distance.c simil.c aes128.c
+OBJS = $(SRCS:.c=.o)
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $(OBJS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJS) $(TARGET)

@@ -1,0 +1,17 @@
+CC = x86_64-w64-mingw32-gcc
+CFLAGS = -Wall -g -DSAMPLE_DLL -I"/mnt/c/Program Files/MySQL/MySQL Server 8.0/include"
+LDFLAGS = -shared -Wl,--export-all-symbols
+TARGET = libshipshuk_lib.dll
+SRCS = shipshuk_lib.c distance.c simil.c aes128.c
+OBJS = $(SRCS:.c=.win.o)
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $(OBJS)
+
+%.win.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJS) $(TARGET)

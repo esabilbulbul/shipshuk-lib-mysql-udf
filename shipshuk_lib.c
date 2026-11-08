@@ -23,7 +23,10 @@
 #include "shipshuk_lib.h"
 #include "simil.h"
 #include "distance.h"
+#include "aes128.h"
 //#include "simil.h"
+//#include <mysql/components/services/udf_metadata.h>
+//#include <mysql/service_plugin_registry.h>
 
 #ifdef __WIN__
     #define DLLEXP __declspec(dllexport)
@@ -37,6 +40,7 @@
 extern "C" {
 #endif
 
+unsigned char gDefaultAES128Key[16] = "Bulbuller195@.xy"; 
 
 
 /******************************************************************************
@@ -81,7 +85,7 @@ DLL_EXPORT char *shipshuk_test(UDF_INIT       *initid,
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 DLL_EXPORT my_bool SIMIL_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
 {
-    if (args->arg_count != 3)
+    if (args->arg_count != 2)
     {
         //Requires more argument for instance
         //x_strlcpy(message, "No arguments allowed (udf: lib_mysqludf_str_info)", MYSQL_ERRMSG_SIZE);
@@ -118,7 +122,7 @@ DLL_EXPORT longlong SIMIL(  UDF_INIT *initid, UDF_ARGS *args, char *is_null, cha
 
     int len0 = (int)iStrLen0;
     int len1 = (int)iStrLen1;
-    int len2 = (int)iStrLen2;
+    //int len2 = (int)iStrLen2;
     
     if (len0>=255)
         len0=255;
@@ -128,12 +132,169 @@ DLL_EXPORT longlong SIMIL(  UDF_INIT *initid, UDF_ARGS *args, char *is_null, cha
     
     memcpy(word0, args->args[0], len0);
     memcpy(word1, args->args[1], len1);
-    
+
     int iRes = simil(word0, word1);
+
+    //*res_length = len0 + len1;
+
+    return iRes;
+}
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//                              AES128 Encrypt Function
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+DLL_EXPORT my_bool AES128_ENCRYPT_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
+{
+    if (args->arg_count != 2)
+    {
+        //Requires more argument for instance
+        //x_strlcpy(message, "No arguments allowed (udf: lib_mysqludf_str_info)", MYSQL_ERRMSG_SIZE);
+        return 1;
+    }
+
+    if (args->arg_type[0] != STRING_RESULT)
+        return 1;
+    
+    if (args->arg_type[1] != STRING_RESULT)
+        return 1;
+    
+    initid->maybe_null = 1;
+    initid->max_length = 255+1;//20;//(4) - 1;
+    //initid->const_item = 0;//1 if the result same for each calls
+    return 0;
+}
+
+DLL_EXPORT void AES128_ENCRYPT_deinit(UDF_INIT *initid ATTRIBUTE_UNUSED)
+{
+    free(initid->ptr); 
+}
+
+DLL_EXPORT char * AES128_ENCRYPT(   UDF_INIT        *initid, 
+                            UDF_ARGS        *args,
+                            char            *result, 
+                            unsigned long   *res_length,
+                            char            *null_value, 
+                            char            *error)
+{
+    //memcpy(result, args->args[0], args->lengths[0]);
+    unsigned long iStrLen0 = args->lengths[0];
+    unsigned long iStrLen1 = args->lengths[1];
+    unsigned long iStrLen2 = 0;
+    if (args->arg_count>2)
+    {
+        iStrLen2 = args->lengths[2];
+    }
+
+    int len0 = (int)iStrLen0;
+    int len1 = (int)iStrLen1;
+    //int len2 = (int)iStrLen2;
+    
+    if (len0>=255)
+        len0=255;
+    
+    char word0[255]="";
+    char word1[255]="";
+    
+    memcpy(word0, args->args[0], len0);
+    if(len1!=0)
+        memcpy(word1, args->args[1], len1);
+    else
+        memcpy(word1, gDefaultAES128Key, 16);//DEFAULT KEY
+
+    //memcpy(result, word1,len1);
+    //strcpy(result, "esabil");
+	//*res_length = len1;
+    AESResult aesResult;
+    aesResult = aes_encrypt(word0, word1);
+
+    memcpy(result, aesResult.data, aesResult.length);
+    *res_length = aesResult.length;
+
+    //strcpy(result, "esabil");
+    //int iRes = simil(word0, word1);
     
     //*res_length = len0 + len1;
     
-    return iRes;
+    return result;
+}
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//                              AES128 Decrypt Function
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+DLL_EXPORT my_bool AES128_DECRYPT_init(UDF_INIT *initid, UDF_ARGS *args, char *message)
+{
+    if (args->arg_count != 2)
+    {
+        //Requires more argument for instance
+        //x_strlcpy(message, "No arguments allowed (udf: lib_mysqludf_str_info)", MYSQL_ERRMSG_SIZE);
+        return 1;
+    }
+
+    if (args->arg_type[0] != STRING_RESULT)
+        return 1;
+    
+    if (args->arg_type[1] != STRING_RESULT)
+        return 1;
+    
+    initid->maybe_null = 1;
+    initid->max_length = 255+1;//20;//(4) - 1;
+    //initid->const_item = 0;//1 if the result same for each calls
+    return 0;
+}
+
+DLL_EXPORT void AES128_DECRYPT_deinit(UDF_INIT *initid ATTRIBUTE_UNUSED)
+{
+    free(initid->ptr); 
+}
+
+DLL_EXPORT char * AES128_DECRYPT(   UDF_INIT        *initid, 
+                                    UDF_ARGS        *args,
+                                    char            *result, 
+                                    unsigned long   *res_length,
+                                    char            *null_value, 
+                                    char            *error)
+{
+    //memcpy(result, args->args[0], args->lengths[0]);
+    unsigned long iStrLen0 = args->lengths[0];
+    unsigned long iStrLen1 = args->lengths[1];
+    unsigned long iStrLen2 = 0;
+    if (args->arg_count>2)
+    {
+        iStrLen2 = args->lengths[2];
+    }
+
+    int len0 = (int)iStrLen0;
+    int len1 = (int)iStrLen1;
+    //int len2 = (int)iStrLen2;
+    
+    if (len0>=255)
+        len0=255;
+    
+    char word0[255]="";
+    char word1[255]="";
+    
+    memcpy(word0, args->args[0], len0);
+    //memcpy(word1, args->args[1], len1);
+    if(len1!=0)
+        memcpy(word1, args->args[1], len1);
+    else
+        memcpy(word1, gDefaultAES128Key, 16);//DEFAULT KEY
+
+    //memcpy(result, word1,len1);
+    //strcpy(result, "esabil");
+	//*res_length = len1;
+    AESResult aesResult;
+    aesResult = aes_decrypt(word0, word1);
+
+    memcpy(result, aesResult.data, aesResult.length);
+    *res_length = aesResult.length;
+
+    //strcpy(result, "esabil");
+    //int iRes = simil(word0, word1);
+    
+    //*res_length = len0 + len1;
+    
+    return result;
 }
 
 /*

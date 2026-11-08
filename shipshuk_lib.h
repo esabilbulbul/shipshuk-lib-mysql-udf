@@ -46,26 +46,23 @@ typedef char my_bool;
     extern "C" {
     #endif
 
+        // SIMIL Function
+        //-------------------------------------------------------------
         DLL_EXPORT my_bool SIMIL_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
         
         DLL_EXPORT void SIMIL_deinit(UDF_INIT *initid ATTRIBUTE_UNUSED);
-/*
-        DLL_EXPORT char* SIMIL( UDF_INIT       *initid, 
-                                UDF_ARGS        *args,
-                                char            *result,
-                                unsigned long   *res_length,
-                                char            *null_value, 
-                                char            *error);
-*/
+
         DLL_EXPORT longlong SIMIL(  UDF_INIT *initid, UDF_ARGS *args, char     *is_null, char     *error);
         
+        // Distance Function
+        //-------------------------------------------------------------
         DLL_EXPORT my_bool DISTANCE_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
         DLL_EXPORT void DISTANCE_deinit(UDF_INIT *initid ATTRIBUTE_UNUSED);
         
         DLL_EXPORT double DISTANCE(  UDF_INIT *initid, UDF_ARGS *args, char *is_null, char *error);
         
-        
-        
+        // Test Function
+        //-------------------------------------------------------------
         DLL_EXPORT my_bool shipshuk_test_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
 
         DLL_EXPORT void shipshuk_test_deinit(UDF_INIT *initid ATTRIBUTE_UNUSED);
@@ -79,13 +76,40 @@ typedef char my_bool;
 
         DLL_EXPORT int win_test();
 
-        
+        // ISIMIL Function
+        //-------------------------------------------------------------
         DLL_EXPORT my_bool ISIMIL_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
         
         DLL_EXPORT void ISIMIL_deinit(UDF_INIT *initid ATTRIBUTE_UNUSED);
         
         DLL_EXPORT unsigned long ISIMIL(  UDF_INIT *initid, UDF_ARGS *args, char     *is_null, char     *error);
         
+        // AES Function 
+        //-------------------------------------------------------------
+        DLL_EXPORT my_bool AES128_ENCRYPT_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
+        
+        DLL_EXPORT void AES128_ENCRYPT_deinit(UDF_INIT *initid ATTRIBUTE_UNUSED);
+
+        DLL_EXPORT char * AES128_ENCRYPT(   UDF_INIT       *initid, 
+                                    UDF_ARGS        *args,
+                                    char            *result, 
+                                    unsigned long   *res_length,
+                                    char            *null_value, 
+                                    char            *error);
+
+        // AES Function 
+        //-------------------------------------------------------------
+        DLL_EXPORT my_bool AES128_DECRYPT_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
+
+        DLL_EXPORT void AES128_DECRYPT_deinit(UDF_INIT *initid ATTRIBUTE_UNUSED);
+
+        DLL_EXPORT char * AES128_DECRYPT(   UDF_INIT       *initid, 
+                                    UDF_ARGS        *args,
+                                    char            *result, 
+                                    unsigned long   *res_length,
+                                    char            *null_value, 
+                                    char            *error);
+
     #ifdef __cplusplus
     }
     #endif
