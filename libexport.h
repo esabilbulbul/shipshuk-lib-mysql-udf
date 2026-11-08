@@ -14,20 +14,14 @@
 #ifndef LIBEXPORT_H
 #define LIBEXPORT_H
 
-    #ifdef __cplusplus
-    extern "C" {
-    #endif
-
-
+    #if defined(_WIN32) || defined(__CYGWIN__)
         #ifdef SAMPLE_DLL
             #define DLL_EXPORT __declspec(dllexport)
         #else
             #define DLL_EXPORT __declspec(dllimport)
         #endif
-
-
-    #ifdef __cplusplus
-    }
+    #else
+        #define DLL_EXPORT
     #endif
 
 #endif /* LIBEXPORT_H */
